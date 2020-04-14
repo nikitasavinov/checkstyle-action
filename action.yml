@@ -1,6 +1,9 @@
 # action.yml
 name: 'Run java checkstyle'
 description: 'Run java checkstyle with reviewdog'
+branding:
+  icon: 'code'  
+  color: 'red'
 inputs:
   github_token:
     description: 'GITHUB_TOKEN.'
