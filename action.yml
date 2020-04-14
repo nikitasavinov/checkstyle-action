@@ -13,7 +13,6 @@ inputs:
     default: 'github-pr-check'
   checkstyle_config:
     description: 'Checkstyle config file'
-    required: true
     default: 'google_checks.xml'
 runs:
   using: 'docker'
