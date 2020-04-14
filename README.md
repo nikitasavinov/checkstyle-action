@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Checkstyle job
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Run check style
       uses: nikitasavinov/checkstyle-action@master
       with:
