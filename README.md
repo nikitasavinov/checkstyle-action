@@ -3,7 +3,7 @@
 Runs [checkstyle](https://github.com/checkstyle/checkstyle) with [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests.
 
 Example:
-https://github.com/nikitasavinov/checkstyle-action/pull/2 
+https://github.com/nikitasavinov/checkstyle-action/pull/2/files
 
 ## Input
 
