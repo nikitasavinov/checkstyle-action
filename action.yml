@@ -1,6 +1,6 @@
 # action.yml
-name: 'Java Checkstyle'
-description: 'Greet someone and record the time'
+name: 'Run java checkstyle'
+description: 'Run java checkstyle with reviewdog'
 inputs:
   github_token:
     description: 'GITHUB_TOKEN.'
