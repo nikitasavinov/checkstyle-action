@@ -20,7 +20,7 @@ inputs:
     default: 'google_checks.xml'
   workdir:
     description: 'Working directory relative to the root directory.'
-    default: './'
+    default: '.'
   tool_name:
     description: 'Tool name to use for reviewdog reporter'
     default: 'reviewdog'
