@@ -22,7 +22,7 @@ inputs:
     description: 'Working directory relative to the root directory.'
     default: './'
   tool_name:
-    description: 'Name for the reviewdog'
+    description: 'Tool name to use for reviewdog reporter'
     default: 'reviewdog'
 runs:
   using: 'docker'
