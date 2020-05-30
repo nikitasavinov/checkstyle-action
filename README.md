@@ -46,6 +46,6 @@ jobs:
     - name: Run check style
       uses: nikitasavinov/checkstyle-action@master
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
 ```
