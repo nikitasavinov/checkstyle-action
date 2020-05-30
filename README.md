@@ -22,6 +22,15 @@ It's same as `-level` flag of reviewdog.
 Optional. Reporter of reviewdog command [github-pr-check,github-pr-review].
 It's same as `-reporter` flag of reviewdog.
 
+### `tool_name`
+    
+Optional. Tool name to use for reviewdog reporter.
+Default is 'reviewdog'.
+
+### `workdir`
+Optional. Working directory relative to the root directory.
+
+
 ## Example usage
 
 ``` yml
