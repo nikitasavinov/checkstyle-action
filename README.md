@@ -48,4 +48,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
+        tool_name: 'testtool'
 ```
