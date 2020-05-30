@@ -10,7 +10,7 @@ import org.springframework.context.annotation.*;
 public class Application {
 
 	public static void Main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(Application.class, args); 
 	}
 
 	private void DoNothing(){
