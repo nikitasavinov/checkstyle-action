@@ -1,6 +1,9 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Run java checkstyle'
+description: 'Run java checkstyle with reviewdog'
+branding:
+  icon: 'code'  
+  color: 'red'
 inputs:
   github_token:
     description: 'GITHUB_TOKEN.'
@@ -15,6 +18,12 @@ inputs:
     description: 'Checkstyle config file'
     required: true
     default: 'google_checks.xml'
+  workdir:
+    description: 'Working directory relative to the root directory.'
+    default: '.'
+  tool_name:
+    description: 'Tool name to use for reviewdog reporter'
+    default: 'reviewdog'
 runs:
   using: 'docker'
   image: 'Dockerfile'

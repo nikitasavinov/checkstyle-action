@@ -2,6 +2,9 @@
 
 Runs [checkstyle](https://github.com/checkstyle/checkstyle) with [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests.
 
+Example:
+https://github.com/nikitasavinov/checkstyle-action/pull/2/files
+
 ## Input
 
 ### `checkstyle_config`
@@ -18,6 +21,15 @@ It's same as `-level` flag of reviewdog.
 
 Optional. Reporter of reviewdog command [github-pr-check,github-pr-review].
 It's same as `-reporter` flag of reviewdog.
+
+### `tool_name`
+    
+Optional. Tool name to use for reviewdog reporter.
+Default is 'reviewdog'.
+
+### `workdir`
+Optional. Working directory relative to the root directory.
+
 
 ## Example usage
 
