@@ -24,7 +24,7 @@ It's same as `-reporter` flag of reviewdog.
 
 ### `fail_on_error`
 
-Optional.  Exit code for reviewdog when errors are found [true,false]
+Optional.  Exit code for reviewdog when errors are found [true,false].
 Default is `false`.
 
 ### `tool_name`
