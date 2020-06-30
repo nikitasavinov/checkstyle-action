@@ -22,6 +22,16 @@ It's same as `-level` flag of reviewdog.
 Optional. Reporter of reviewdog command [github-pr-check,github-pr-review].
 It's same as `-reporter` flag of reviewdog.
 
+### `filter_mode`
+
+Optional. Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+Default is `added`.
+
+### `fail_on_error`
+
+Optional.  Exit code for reviewdog when errors are found [true,false].
+Default is `false`.
+
 ### `tool_name`
     
 Optional. Tool name to use for reviewdog reporter.
@@ -46,6 +56,7 @@ jobs:
     - name: Run check style
       uses: nikitasavinov/checkstyle-action@master
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
+        tool_name: 'testtool'
 ```
