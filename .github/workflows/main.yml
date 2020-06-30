@@ -13,4 +13,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
         tool_name: 'testtool'
-        fail-on-error: true
+        fail_on_error: true
