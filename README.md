@@ -22,6 +22,11 @@ It's same as `-level` flag of reviewdog.
 Optional. Reporter of reviewdog command [github-pr-check,github-pr-review].
 It's same as `-reporter` flag of reviewdog.
 
+### `filter_mode`
+
+Optional. Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+Default is `added`.
+
 ### `fail_on_error`
 
 Optional.  Exit code for reviewdog when errors are found [true,false].
