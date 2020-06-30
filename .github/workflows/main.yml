@@ -12,3 +12,4 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
+	      fail-on-error: true
