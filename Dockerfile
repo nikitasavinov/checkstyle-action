@@ -12,4 +12,6 @@
 # RUN cd /java-checkstyle && git checkout develop && npm i
 FROM andxu/javacheckstyle
 
+COPY entrypoint.sh /entrypoint.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
