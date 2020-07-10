@@ -9,7 +9,7 @@ COPY entrypoint.sh /entrypoint.sh
 COPY sample.xml /sample.xml
 
 
-RUN git clone https://github.com/andxu/java-checkstyle /
+RUN git clone https://github.com/andxu/java-checkstyle /java-checkstyle
 RUN cd /java-checkstyle && git checkout develop && npm i
 
 ENTRYPOINT ["/entrypoint.sh"]
