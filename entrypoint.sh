@@ -16,7 +16,7 @@ node /java-checkstyle/src/checkstyle /github/workspace
 echo "changes.txt generated3"
 cat /github/workspace/checkstyle-result.xml
 # exec cat /github/workspace/checkstyle-result.xml \
-exec cat /sample.xml \
+exec cat /github/workspace/checkstyle-result.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
