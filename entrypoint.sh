@@ -4,7 +4,8 @@ echo "Running check(andy3)"
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 env
-exec git config --global --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+cat /github/workflow/event.json
+git config --global --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
 exec git diff-tree --no-commit-id --name-only -r ${GITHUB_REF} ${GITHUB_SHA} >changes.txt
 echo $(cat changes.txt)
 exec cat /sample.xml \
