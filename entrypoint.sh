@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Running check"
+echo "Running check(andy)"
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
