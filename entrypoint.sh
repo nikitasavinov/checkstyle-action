@@ -9,7 +9,6 @@ git diff-tree -r --no-commit-id --name-only ${GITHUB_SHA} origin/${GITHUB_BASE_R
 echo "changes.txt generated"
 node /java-checkstyle/src/checkstyle /github/workspace
 echo "checkstyle-result.xml generated"
-cat /github/workspace/checkstyle-result.xml
 exec cat /github/workspace/checkstyle-result.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
