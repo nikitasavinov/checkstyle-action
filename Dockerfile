@@ -12,4 +12,5 @@ RUN apk add --update npm
 RUN git clone https://github.com/andxu/java-checkstyle /java-checkstyle
 RUN cd /java-checkstyle && git checkout develop && npm i
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh"]

@@ -11,7 +11,8 @@ echo "changes.txt generated"
 # exec git clone https://github.com/andxu/java-checkstyle ../java-checkstyle
 # exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
 exec node /java-checkstyle/src/checkstyle /github/workspace
-exec cat /github/workspace/checkstyle-result.xml \
+# exec cat /github/workspace/checkstyle-result.xml \
+exec cat /sample.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
