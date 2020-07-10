@@ -11,19 +11,11 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 # exec git clone https://github.com/andxu/java-checkstyle ../java-checkstyle
 # exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
 echo 'src/main/java/com/example/App.java' > changes.txt
-echo "changes.txt generated2"
-# exec node /java-checkstyle/src/checkstyle /github/workspace
+echo "changes.txt generated3"
+node /java-checkstyle/src/checkstyle /github/workspace
+echo "changes.txt generated3"
+cat /github/workspace/checkstyle-result.xml
 # exec cat /github/workspace/checkstyle-result.xml \
-exec cat /sample.xml \
- | reviewdog -f=checkstyle \
-      -name="${INPUT_TOOL_NAME}" \
-      -reporter="${INPUT_REPORTER:-github-pr-check}" \
-      -filter-mode="${INPUT_FILTER_MODE:-added}" \
-      -fail-on-error="${INPUT_FAIL_ON_ERROR:-false}" \
-      -level="${INPUT_LEVEL}"
-
-
-
 exec cat /sample.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
