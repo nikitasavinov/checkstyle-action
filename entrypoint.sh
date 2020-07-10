@@ -11,9 +11,9 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 # exec git clone https://github.com/andxu/java-checkstyle ../java-checkstyle
 # exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
 echo 'src/main/java/com/example/App.java' > changes.txt
-echo "changes.txt generated3"
+echo "changes.txt generated"
 node /java-checkstyle/src/checkstyle /github/workspace
-echo "changes.txt generated3"
+echo "checkstyle-result.xml generated"
 cat /github/workspace/checkstyle-result.xml
 # exec cat /github/workspace/checkstyle-result.xml \
 exec cat /github/workspace/checkstyle-result.xml \
