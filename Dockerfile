@@ -6,11 +6,9 @@ RUN wget -O - -q https://github.com/checkstyle/checkstyle/releases/download/chec
 RUN wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b /usr/local/bin/ ${REVIEWDOG_VERSION}
 RUN apk add --no-cache git
 COPY entrypoint.sh /entrypoint.sh
-COPY sample.xml /sample.xml
 
 RUN apk add --update npm
 RUN git clone https://github.com/andxu/java-checkstyle /java-checkstyle
 RUN cd /java-checkstyle && git checkout develop && npm i
 
  ENTRYPOINT ["/entrypoint.sh"]
-#ENTRYPOINT ["/bin/sh"]

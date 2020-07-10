@@ -1,21 +1,15 @@
 #!/bin/sh
 
-echo "Running check(andy7)"
+echo "Running check"
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 git fetch origin ${GITHUB_BASE_REF}
 git diff-tree -r --no-commit-id --name-only ${GITHUB_SHA} origin/${GITHUB_BASE_REF} > changes.txt
-
-
-# exec git clone https://github.com/andxu/java-checkstyle ../java-checkstyle
-# exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
-# echo 'src/main/java/com/example/App.java' > changes.txt
 echo "changes.txt generated"
 node /java-checkstyle/src/checkstyle /github/workspace
 echo "checkstyle-result.xml generated"
 cat /github/workspace/checkstyle-result.xml
-# exec cat /github/workspace/checkstyle-result.xml \
 exec cat /github/workspace/checkstyle-result.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
