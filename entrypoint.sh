@@ -6,8 +6,8 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 env
 echo "git diff-tree -r --no-commit-id --name-only ${GITHUB_SHA} origin/${GITHUB_BASE_REF}"
 git config --global --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
-exec git diff-tree --no-commit-id --name-only -r ${GITHUB_REF} ${GITHUB_SHA} >changes.txt
-echo $(cat changes.txt)
+exec git diff-tree -r --no-commit-id --name-only ${GITHUB_SHA} origin/${GITHUB_BASE_REF} >changes.txt
+cat changes.txt
 exec cat /sample.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
