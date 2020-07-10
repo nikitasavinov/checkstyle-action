@@ -9,9 +9,9 @@ exec git diff-tree -r --no-commit-id --name-only ${GITHUB_SHA} origin/${GITHUB_B
 echo "changes.txt generated"
 
 exec git clone https://github.com/andxu/java-checkstyle ../
-exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
-
-exec cat /sample.xml \
+# exec cd ../java-checkstyle && git checkout develop && npm i && node src/checkstyle /github/workspace
+exec node /java-checkstyle/src/checkstyle /github/workspace
+exec cat /github/workspace/checkstyle-result.xml \
  | reviewdog -f=checkstyle \
       -name="${INPUT_TOOL_NAME}" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
