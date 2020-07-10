@@ -8,7 +8,7 @@ RUN apk add --no-cache git
 COPY entrypoint.sh /entrypoint.sh
 COPY sample.xml /sample.xml
 
-
+RUN apk add --update npm
 RUN git clone https://github.com/andxu/java-checkstyle /java-checkstyle
 RUN cd /java-checkstyle && git checkout develop && npm i
 
