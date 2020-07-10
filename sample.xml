@@ -2,17 +2,17 @@
 <checkstyle version="8.34">
 <file name="/github/workspace/./src/main/java/com/example/App.java">
 <error line="3" severity="warning" message="First sentence of Javadoc is missing an ending period." source="com.puppycrawl.tools.checkstyle.checks.javadoc.SummaryJavadocCheck"/>
-<error line="7" column="5" severity="warning" message="&apos;ctor def modifier&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="8" column="5" severity="warning" message="&apos;ctor def rcurly&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="14" column="5" severity="warning" message="&apos;method def modifier&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="15" column="9" severity="warning" message="&apos;method def&apos; child has incorrect indentation level 8, expected level should be 4." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="16" column="5" severity="warning" message="&apos;method def rcurly&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="7" column="5" severity="warning" message="&apos;ctor def modifier&apos; has incorrect indentation level 42, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="8" column="5" severity="warning" message="&apos;ctor def rcurly&apos; has incorrect indentation level 42, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="14" column="5" severity="warning" message="&apos;method def modifier&apos; has incorrect indentation level 42, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="15" column="9" severity="warning" message="&apos;method def&apos; child has incorrect indentation level 82, expected level should be 4." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="16" column="5" severity="warning" message="&apos;method def rcurly&apos; has incorrect indentation level 42, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
 </file>
 <file name="/github/workspace/./src/test/java/com/example/AppTest.java">
 <error line="5" column="1" severity="warning" message="Import statement for &apos;org.junit.jupiter.api.Assertions.assertEquals&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
-<error line="14" column="5" severity="warning" message="&apos;method def modifier&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="16" column="9" severity="warning" message="&apos;method def&apos; child has incorrect indentation level 8, expected level should be 4." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
-<error line="17" column="5" severity="warning" message="&apos;method def rcurly&apos; has incorrect indentation level 4, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="14" column="5" severity="warning" message="&apos;method def modifier&apos; has incorrect indentation level 42, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="16" column="9" severity="warning" message="&apos;method def&apos; child has incorrect indentation level 28, expected level should be 4." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
+<error line="17" column="5" severity="warning" message="&apos;method def rcurly&apos; has incorrect indentation level 24, expected level should be 2." source="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck"/>
 </file>
 <file name="/github/workspace/./pom.xml">
 </file>
