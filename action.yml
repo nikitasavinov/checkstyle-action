@@ -28,6 +28,9 @@ inputs:
     description: 'Checkstyle config file'
     required: true
     default: 'google_checks.xml'
+  checkstyle_version:
+    description: 'Checkstyle version'
+    default: '8.37'
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
