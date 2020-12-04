@@ -8,6 +8,4 @@ RUN wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/in
 RUN apk add --no-cache git
 COPY entrypoint.sh /entrypoint.sh
 
-RUN java -jar /checkstyle.jar -V
-
 ENTRYPOINT ["/entrypoint.sh"]
