@@ -37,6 +37,9 @@ inputs:
   tool_name:
     description: 'Tool name to use for reviewdog reporter'
     default: 'reviewdog'
+  properties_file:
+    description: 'Properties file relative to the root directory.'
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
