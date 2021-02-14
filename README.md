@@ -3,7 +3,9 @@
 Runs [checkstyle](https://github.com/checkstyle/checkstyle) with [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests.
 
 Example:
-https://github.com/nikitasavinov/checkstyle-action/pull/2/files
+
+[![github-pr-check sample](https://user-images.githubusercontent.com/6826684/107879090-1a1c0500-6ed7-11eb-9260-14acdc94ad36.png)](https://github.com/nikitasavinov/checkstyle-action/pull/2/files)
+
 
 ## Input
 
