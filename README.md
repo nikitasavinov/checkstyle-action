@@ -42,6 +42,10 @@ Default is 'reviewdog'.
 ### `workdir`
 Optional. Working directory relative to the root directory.
 
+### `checkstyle_version`
+Optional. Checkstyle version to use.
+Ddefault is '8.40'
+
 ### `properties_file`
 Optional. Properties file relative to the root directory.
 
