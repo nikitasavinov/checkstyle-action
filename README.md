@@ -33,6 +33,7 @@ Default is `added`.
 
 Optional.  Exit code for reviewdog when errors are found [true,false].
 Default is `false`.
+
 **Important**: this feature only works when `level` is set to `error`.
 
 ### `tool_name`
