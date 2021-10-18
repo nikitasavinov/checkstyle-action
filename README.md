@@ -51,6 +51,9 @@ Default is `8.40`
 ### `properties_file`
 Optional. Properties file relative to the root directory.
 
+### `config_loc`
+Optional. The `config_loc` property in checkstyle.xml
+
 ## Example usage
 
 ``` yml
