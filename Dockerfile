@@ -1,4 +1,4 @@
-FROM openjdk:8-alpine
+FROM openjdk:17-alpine
 
 ENV REVIEWDOG_VERSION=v0.10.0
 
