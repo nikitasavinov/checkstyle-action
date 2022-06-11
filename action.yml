@@ -30,7 +30,7 @@ inputs:
     default: 'google_checks.xml'
   checkstyle_version:
     description: 'Checkstyle version'
-    default: '8.40'
+    default: '10.3'
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
