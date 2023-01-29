@@ -14,7 +14,7 @@ public class Application {
 	}
 
 	private void DoNothing(){
-		Int J = 100;
+		Int J = 100; 
 	}
 
 	@Bean
