@@ -46,7 +46,7 @@ Optional. Working directory relative to the root directory.
 
 ### `checkstyle_version`
 Optional. Checkstyle version to use.
-Default is `10.3`
+Default is `10.13.0`
 
 ### `properties_file`
 Optional. Properties file relative to the root directory.
