@@ -2,6 +2,8 @@
 
 echo "Running check"
 
+command -v reviewdog >/dev/null 2>&1 || { echo >&2 "reviewdog: not found"; exit 1; }
+
 cd "${GITHUB_WORKSPACE}" || exit 1
 
 git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -11,6 +13,8 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 if [ -n "${INPUT_PROPERTIES_FILE}" ]; then
   OPT_PROPERTIES_FILE="-p ${INPUT_PROPERTIES_FILE}"
 fi
+
+echo "Downloading checkstyle-${INPUT_CHECKSTYLE_VERSION}"
 
 wget -O - -q https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${INPUT_CHECKSTYLE_VERSION}/checkstyle-${INPUT_CHECKSTYLE_VERSION}-all.jar > /checkstyle.jar
 
