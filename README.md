@@ -34,6 +34,8 @@ Default is `added`.
 Optional.  Exit code for reviewdog when errors are found [true,false].
 Default is `false`.
 
+**Important**: this feature only works when `level` is set to `error`.
+
 ### `tool_name`
     
 Optional. Tool name to use for reviewdog reporter.
@@ -41,6 +43,10 @@ Default is 'reviewdog'.
 
 ### `workdir`
 Optional. Working directory relative to the root directory.
+
+### `checkstyle_version`
+Optional. Checkstyle version to use.
+Default is `10.3`
 
 ### `properties_file`
 Optional. Properties file relative to the root directory.
