@@ -1,4 +1,4 @@
-FROM openjdk:8-alpine
+FROM eclipse-temurin:8-jdk-alpine
 
 ENV REVIEWDOG_VERSION=v0.11.0
 ENV INPUT_CHECKSTYLE_VERSION=8.41
