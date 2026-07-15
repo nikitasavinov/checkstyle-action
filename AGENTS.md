@@ -35,13 +35,11 @@ Docker 29+). Do not remove that config.
 docker build . --file Dockerfile --tag checkstyle-action:local
 ```
 
-> Egress caveat: the real `Dockerfile` runs `apk add --no-cache git`, which needs
-> `dl-cdn.alpinelinux.org` (all Alpine mirrors). That host is blocked by the default egress
-> allowlist in this VM, so the build fails at the `apk` step with a TLS/connection-reset error.
-> To fix, request `dl-cdn.alpinelinux.org` be added to the network allowlist. `github.com` and
-> `raw.githubusercontent.com` (used to fetch reviewdog and the Checkstyle JAR) are already allowed.
-> `git` is only used by `entrypoint.sh` for `git config --add safe.directory` and degrades
-> gracefully if absent, so a git-less image is enough to exercise the full check flow.
+> Egress caveat: the `Dockerfile` fetches from `github.com` / `raw.githubusercontent.com`
+> (reviewdog + the Checkstyle JAR) and `dl-cdn.alpinelinux.org` (`apk add --no-cache git`). All
+> three are on the network allowlist for this environment. If a fresh VM ever blocks
+> `dl-cdn.alpinelinux.org` again, the build fails at the `apk add git` step with a
+> TLS/connection-reset error — re-request that domain in the network allowlist to unblock it.
 
 ### Run the action locally (no PR / no GitHub token needed)
 
