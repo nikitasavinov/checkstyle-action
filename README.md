@@ -6,6 +6,8 @@ Example:
 
 [![github-pr-check sample](https://user-images.githubusercontent.com/6826684/107879090-1a1c0500-6ed7-11eb-9260-14acdc94ad36.png)](https://github.com/nikitasavinov/checkstyle-action/pull/2/files)
 
+Or look here: https://github.com/nikitasavinov/checkstyle-action/pull/48
+
 ## Release notes
 
 ### 1.0.0 upgrade
