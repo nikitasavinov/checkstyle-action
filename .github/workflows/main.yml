@@ -1,15 +1,204 @@
-on: pull_request
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  checkstyle_job:
-    runs-on: ubuntu-latest
-    name: Checkstyle job
+  static-checks:
+    name: Static checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      ACTIONLINT_VERSION: 1.7.12
+      ACTIONLINT_LINUX_X86_64_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Run check style
-      uses: nikitasavinov/checkstyle-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: 'github-pr-check'
-        tool_name: 'testtool'
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install actionlint
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="${RUNNER_TEMP}/actionlint.tar.gz"
+          curl --fail --silent --show-error --location \
+            --output "${archive}" \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          echo "${ACTIONLINT_LINUX_X86_64_SHA256}  ${archive}" | sha256sum --check -
+          tar --extract --gzip --file "${archive}" --directory "${RUNNER_TEMP}" actionlint
+
+      - name: Lint workflows
+        run: "${RUNNER_TEMP}/actionlint"
+
+      - name: Lint the entrypoint
+        run: shellcheck --severity=error entrypoint.sh
+
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: error
+
+  build-action:
+    name: Build action image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build the action image
+        run: docker build --tag checkstyle-action:ci .
+
+      - name: Export the action image
+        run: docker save checkstyle-action:ci | gzip > "${RUNNER_TEMP}/checkstyle-action-ci.tar.gz"
+
+      - name: Upload the action image
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: checkstyle-action-ci
+          path: ${{ runner.temp }}/checkstyle-action-ci.tar.gz
+          retention-days: 1
+
+  integration:
+    name: Action / ${{ matrix.name }}
+    needs: build-action
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: clean
+            workdir: .github/fixtures/clean project
+            checkstyle_config: .github/fixtures/config with spaces/checkstyle.xml
+            properties_file: ''
+            fail_on_error: 'true'
+            expected_outcome: success
+            expect_output_contains: ''
+            expect_output_not_contains: invalid_method_name
+
+          - name: violations-advisory
+            workdir: .github/fixtures/violations
+            checkstyle_config: .github/fixtures/config with spaces/checkstyle.xml
+            properties_file: ''
+            fail_on_error: 'false'
+            expected_outcome: success
+            expect_output_contains: invalid_method_name
+            expect_output_not_contains: ''
+
+          - name: violations-blocking
+            workdir: .github/fixtures/violations
+            checkstyle_config: .github/fixtures/config with spaces/checkstyle.xml
+            properties_file: ''
+            fail_on_error: 'true'
+            expected_outcome: failure
+            expect_output_contains: invalid_method_name
+            expect_output_not_contains: ''
+
+          - name: properties-file
+            workdir: .github/fixtures/violations
+            checkstyle_config: .github/fixtures/config with spaces/checkstyle-from-properties.xml
+            properties_file: .github/fixtures/config with spaces/checkstyle.properties
+            fail_on_error: 'true'
+            expected_outcome: success
+            expect_output_contains: ''
+            expect_output_not_contains: invalid_method_name
+
+          - name: invalid-config
+            workdir: .github/fixtures/violations
+            checkstyle_config: .github/fixtures/invalid config/checkstyle.xml
+            properties_file: ''
+            fail_on_error: 'true'
+            expected_outcome: failure
+            expect_output_contains: ''
+            expect_output_not_contains: ''
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download the action image
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: checkstyle-action-ci
+          path: ${{ runner.temp }}/image
+
+      - name: Load the action image
+        run: docker load --input "${RUNNER_TEMP}/image/checkstyle-action-ci.tar.gz"
+
+      - name: Run the checked-out action image
+        id: checkstyle
+        env:
+          INPUT_GITHUB_TOKEN: ''
+          INPUT_LEVEL: error
+          INPUT_REPORTER: local
+          INPUT_FILTER_MODE: nofilter
+          INPUT_FAIL_ON_ERROR: ${{ matrix.fail_on_error }}
+          INPUT_CHECKSTYLE_CONFIG: ${{ matrix.checkstyle_config }}
+          INPUT_CHECKSTYLE_VERSION: '10.3'
+          INPUT_WORKDIR: ${{ matrix.workdir }}
+          INPUT_TOOL_NAME: integration-${{ matrix.name }}
+          INPUT_PROPERTIES_FILE: ${{ matrix.properties_file }}
+        run: |
+          set +e
+          docker run --rm \
+            --volume "${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}" \
+            --workdir "${GITHUB_WORKSPACE}" \
+            --env GITHUB_WORKSPACE \
+            --env INPUT_GITHUB_TOKEN \
+            --env INPUT_LEVEL \
+            --env INPUT_REPORTER \
+            --env INPUT_FILTER_MODE \
+            --env INPUT_FAIL_ON_ERROR \
+            --env INPUT_CHECKSTYLE_CONFIG \
+            --env INPUT_CHECKSTYLE_VERSION \
+            --env INPUT_WORKDIR \
+            --env INPUT_TOOL_NAME \
+            --env INPUT_PROPERTIES_FILE \
+            checkstyle-action:ci \
+            >"${RUNNER_TEMP}/action.out" 2>&1
+          exit_code=$?
+          set -e
+          cat "${RUNNER_TEMP}/action.out"
+          if [ "${exit_code}" -eq 0 ]; then
+            echo "outcome=success" >> "${GITHUB_OUTPUT}"
+          else
+            echo "outcome=failure" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Assert action outcome and output
+        env:
+          ACTUAL_OUTCOME: ${{ steps.checkstyle.outputs.outcome }}
+          EXPECTED_OUTCOME: ${{ matrix.expected_outcome }}
+          EXPECT_OUTPUT_CONTAINS: ${{ matrix.expect_output_contains }}
+          EXPECT_OUTPUT_NOT_CONTAINS: ${{ matrix.expect_output_not_contains }}
+        run: |
+          set -euo pipefail
+          if [ "${ACTUAL_OUTCOME}" != "${EXPECTED_OUTCOME}" ]; then
+            echo "Expected outcome ${EXPECTED_OUTCOME}, got ${ACTUAL_OUTCOME}" >&2
+            exit 1
+          fi
+          if [ -n "${EXPECT_OUTPUT_CONTAINS}" ] && ! grep -Fq "${EXPECT_OUTPUT_CONTAINS}" "${RUNNER_TEMP}/action.out"; then
+            echo "Expected output to contain: ${EXPECT_OUTPUT_CONTAINS}" >&2
+            exit 1
+          fi
+          if [ -n "${EXPECT_OUTPUT_NOT_CONTAINS}" ] && grep -Fq "${EXPECT_OUTPUT_NOT_CONTAINS}" "${RUNNER_TEMP}/action.out"; then
+            echo "Expected output not to contain: ${EXPECT_OUTPUT_NOT_CONTAINS}" >&2
+            exit 1
+          fi
