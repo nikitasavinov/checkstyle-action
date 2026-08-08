@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-alpine
+FROM eclipse-temurin:21-alpine-3.23
 
 ENV REVIEWDOG_VERSION=v0.21.0
 
@@ -7,7 +7,7 @@ RUN wget -q -O /tmp/install-reviewdog.sh \
       "https://raw.githubusercontent.com/reviewdog/reviewdog/${REVIEWDOG_VERSION}/install.sh" \
     && sh /tmp/install-reviewdog.sh -b /usr/local/bin/ "${REVIEWDOG_VERSION}" \
     && rm /tmp/install-reviewdog.sh
-RUN apk add --no-cache git
+RUN apk add --no-cache git=2.52.0-r0
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
