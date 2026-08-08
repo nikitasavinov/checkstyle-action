@@ -40,7 +40,8 @@ jobs:
           tar --extract --gzip --file "${archive}" --directory "${RUNNER_TEMP}" actionlint
 
       - name: Lint workflows
-        run: "${RUNNER_TEMP}/actionlint"
+        run: |
+          "${RUNNER_TEMP}/actionlint"
 
       - name: Lint the entrypoint
         run: shellcheck --severity=error entrypoint.sh
