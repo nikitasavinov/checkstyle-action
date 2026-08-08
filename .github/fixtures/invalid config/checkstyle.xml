@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<module name="Checker">
+  <module name="TreeWalker">
+    <module name="MethodName"
+  </module>
+</module>
