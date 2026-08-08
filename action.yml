@@ -2,7 +2,7 @@
 name: 'Run java checkstyle'
 description: 'Run java checkstyle with reviewdog'
 branding:
-  icon: 'code'  
+  icon: 'code'
   color: 'red'
 inputs:
   github_token:
@@ -15,22 +15,30 @@ inputs:
     description: 'Reporter of reviewdog command [github-pr-check,github-pr-review]'
     default: 'github-pr-check'
   filter_mode:
-      description: |
-        Filtering for the reviewdog command [added,diff_context,file,nofilter].
-        Default is `added`.
-      default: 'added'
+    description: |
+      Filtering for the reviewdog command [added,diff_context,file,nofilter].
+      Default is `added`.
+    default: 'added'
+  fail_level:
+    description: |
+      Exit code for reviewdog when findings are at or above this level
+      [none,any,info,warning,error]. Compared against Checkstyle XML severity.
+      Leave empty to use reviewdog's default, including its fail_on_error shim.
+    default: ''
   fail_on_error:
     description: |
-      Exit code for reviewdog when errors are found [true,false]
-      Default is `false`.
+      Deprecated. Prefer fail_level.
+      Only consulted when fail_level is unset. With github-check and
+      github-pr-check, true fails on error-severity findings; with other
+      reporters, true fails on any finding. Default is `false`.
+    deprecationMessage: 'The fail_on_error input is deprecated; use fail_level instead.'
     default: 'false'
   checkstyle_config:
-    description: 'Checkstyle config file'
-    required: true
+    description: 'Checkstyle config file. Defaults to google_checks.xml.'
     default: 'google_checks.xml'
   checkstyle_version:
     description: 'Checkstyle version'
-    default: '10.3'
+    default: '13.9.0'
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
