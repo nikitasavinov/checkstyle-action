@@ -359,8 +359,8 @@ jobs:
                 exit 1
               fi
             done <<EOF
-${EXPECT_OUTPUT_CONTAINS}
-EOF
+          ${EXPECT_OUTPUT_CONTAINS}
+          EOF
           fi
           if [ -n "${EXPECT_OUTPUT_NOT_CONTAINS}" ] && grep -Fq "${EXPECT_OUTPUT_NOT_CONTAINS}" "${RUNNER_TEMP}/action.out"; then
             echo "Expected output not to contain: ${EXPECT_OUTPUT_NOT_CONTAINS}" >&2
