@@ -48,6 +48,13 @@ inputs:
   properties_file:
     description: 'Properties file relative to the root directory.'
     default: ''
+  classpath:
+    description: |
+      Extra JARs or directories to add to the Checkstyle classpath
+      (for custom checks). Paths are relative to the workspace root.
+      Separate multiple entries with newlines. Use dir/* for all JARs
+      in a directory (Java classpath wildcard).
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'

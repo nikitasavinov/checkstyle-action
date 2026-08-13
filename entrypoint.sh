@@ -28,9 +28,38 @@ if [ ! -s "${checkstyle_jar}" ]; then
   echo "Downloaded Checkstyle jar is empty: ${checkstyle_url}" >&2
   exit 1
 fi
-if ! java -jar "${checkstyle_jar}" --version >/dev/null 2>&1; then
+if ! java -cp "${checkstyle_jar}" com.puppycrawl.tools.checkstyle.Main --version >/dev/null 2>&1; then
   echo "Downloaded Checkstyle jar is not usable (bad download or unsupported version): ${checkstyle_url}" >&2
   exit 1
+fi
+
+extra_cp=""
+if [ -n "${INPUT_CLASSPATH}" ]; then
+  while IFS= read -r entry || [ -n "${entry}" ]; do
+    [ -z "${entry}" ] && continue
+    # Validate the entry resolves to something on disk before adding it.
+    case "${entry}" in
+      # Trailing slash: a directory added to the classpath.
+      */)   [ -d "${entry}" ] ;;
+      # "dir/*" is a Java classpath wildcard (all JARs in dir; the JVM expands it).
+      */\*) [ -d "${entry%/*}" ] ;;
+      # A JAR or other file.
+      *)    [ -e "${entry}" ] ;;
+    esac || {
+      echo "Classpath entry not found: ${entry}" >&2
+      exit 1
+    }
+    extra_cp="${extra_cp:+${extra_cp}:}${entry}"
+  done <<EOF
+${INPUT_CLASSPATH}
+EOF
+fi
+
+if [ -n "${extra_cp}" ]; then
+  # Checkstyle first so a fat custom JAR cannot shadow Main / checkstyle_version.
+  checkstyle_cp="${checkstyle_jar}:${extra_cp}"
+else
+  checkstyle_cp="${checkstyle_jar}"
 fi
 
 report="$(mktemp)"
@@ -38,10 +67,12 @@ trap 'rm -f "${report}"' EXIT
 
 set +e
 if [ -n "${INPUT_PROPERTIES_FILE}" ]; then
-  java -jar "${checkstyle_jar}" "${INPUT_WORKDIR}" -c "${INPUT_CHECKSTYLE_CONFIG}" \
+  java -cp "${checkstyle_cp}" com.puppycrawl.tools.checkstyle.Main \
+    "${INPUT_WORKDIR}" -c "${INPUT_CHECKSTYLE_CONFIG}" \
     -p "${INPUT_PROPERTIES_FILE}" -f xml >"${report}" 2>/tmp/checkstyle.err
 else
-  java -jar "${checkstyle_jar}" "${INPUT_WORKDIR}" -c "${INPUT_CHECKSTYLE_CONFIG}" \
+  java -cp "${checkstyle_cp}" com.puppycrawl.tools.checkstyle.Main \
+    "${INPUT_WORKDIR}" -c "${INPUT_CHECKSTYLE_CONFIG}" \
     -f xml >"${report}" 2>/tmp/checkstyle.err
 fi
 checkstyle_status=$?
