@@ -1,5 +1,8 @@
 name: CI
 
+# Intentionally invalid YAML for testing the independent workflow linter.
+intentional-malformed-workflow-test: [
+
 on:
   pull_request:
   push:
