@@ -79,6 +79,24 @@ Default is `13.9.0`
 ### `properties_file`
 Optional. Properties file relative to the root directory.
 
+### `classpath`
+Optional. Extra JARs or directories to add to the Checkstyle classpath
+(for [custom checks](https://checkstyle.sourceforge.io/writingchecks.html)).
+Paths are relative to the workspace root. Separate multiple entries with
+newlines. A `dir/*` entry is passed through to the JVM as a [classpath
+wildcard](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/classpath.html)
+(all JARs in that directory). Custom modules in the Checkstyle config must use
+their fully qualified class names.
+
+```yml
+- uses: nikitasavinov/checkstyle-action@1.0.0
+  with:
+    checkstyle_config: checkstyle.xml
+    classpath: |
+      build/libs/*
+      third-party/other-checks.jar
+```
+
 ## Example usage
 
 ```yml

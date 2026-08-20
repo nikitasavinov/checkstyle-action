@@ -166,6 +166,94 @@ jobs:
             expected_outcome: failure
             expect_output_contains: ''
             expect_output_not_contains: ''
+
+          - name: custom-classpath
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle.xml
+            properties_file: ''
+            classpath: .github/fixtures/custom-check/custom-checks.jar
+            fail_level: none
+            fail_on_error: 'false'
+            expected_outcome: success
+            expect_output_contains: custom_check_hit
+            expect_output_not_contains: ''
+
+          - name: custom-classpath-two-jars
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle-two-jars.xml
+            properties_file: ''
+            classpath: |
+              .github/fixtures/custom-check/custom-checks.jar
+              .github/fixtures/custom-check/custom-checks-two.jar
+            fail_level: none
+            fail_on_error: 'false'
+            expected_outcome: success
+            expect_output_contains: |
+              custom_check_hit
+              custom_check_hit_two
+            expect_output_not_contains: ''
+
+          - name: custom-classpath-wildcard
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle-two-jars.xml
+            properties_file: ''
+            classpath: .github/fixtures/custom-check/*
+            fail_level: none
+            fail_on_error: 'false'
+            expected_outcome: success
+            expect_output_contains: |
+              custom_check_hit
+              custom_check_hit_two
+            expect_output_not_contains: ''
+
+          - name: custom-classpath-missing-jar
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle.xml
+            properties_file: ''
+            classpath: .github/fixtures/custom-check/does-not-exist.jar
+            fail_level: error
+            fail_on_error: 'false'
+            expect_policy: 'false'
+            expected_outcome: failure
+            expect_output_contains: Classpath entry not found
+            expect_output_not_contains: ''
+
+          - name: custom-classpath-missing-wildcard
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle.xml
+            properties_file: ''
+            classpath: .github/fixtures/custom-check/missing-dir/*
+            fail_level: error
+            fail_on_error: 'false'
+            expect_policy: 'false'
+            expected_outcome: failure
+            expect_output_contains: Classpath entry not found
+            expect_output_not_contains: ''
+
+          - name: custom-classpath-missing-second-jar
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle-two-jars.xml
+            properties_file: ''
+            classpath: |
+              .github/fixtures/custom-check/custom-checks.jar
+              .github/fixtures/custom-check/does-not-exist.jar
+            fail_level: error
+            fail_on_error: 'false'
+            expect_policy: 'false'
+            expected_outcome: failure
+            expect_output_contains: Classpath entry not found
+            expect_output_not_contains: ''
+
+          - name: custom-config-without-classpath
+            workdir: .github/fixtures/custom-check/project
+            checkstyle_config: .github/fixtures/custom-check/checkstyle.xml
+            properties_file: ''
+            fail_level: error
+            fail_on_error: 'false'
+            expect_policy: 'false'
+            expected_outcome: failure
+            expect_output_contains: Unable to instantiate
+            expect_output_not_contains: ''
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -195,6 +283,7 @@ jobs:
           INPUT_WORKDIR: ${{ matrix.workdir }}
           INPUT_TOOL_NAME: integration-${{ matrix.name }}
           INPUT_PROPERTIES_FILE: ${{ matrix.properties_file }}
+          INPUT_CLASSPATH: ${{ matrix.classpath }}
         run: |
           set +e
           docker run --rm \
@@ -212,6 +301,7 @@ jobs:
             --env INPUT_WORKDIR \
             --env INPUT_TOOL_NAME \
             --env INPUT_PROPERTIES_FILE \
+            --env INPUT_CLASSPATH \
             checkstyle-action:ci \
             >"${RUNNER_TEMP}/action.out" 2>&1
           exit_code=$?
@@ -245,9 +335,16 @@ jobs:
             echo "Expected output to contain policy: ${expected_policy}" >&2
             exit 1
           fi
-          if [ -n "${EXPECT_OUTPUT_CONTAINS}" ] && ! grep -Fq "${EXPECT_OUTPUT_CONTAINS}" "${RUNNER_TEMP}/action.out"; then
-            echo "Expected output to contain: ${EXPECT_OUTPUT_CONTAINS}" >&2
-            exit 1
+          if [ -n "${EXPECT_OUTPUT_CONTAINS}" ]; then
+            while IFS= read -r needle || [ -n "${needle}" ]; do
+              [ -z "${needle}" ] && continue
+              if ! grep -Fq "${needle}" "${RUNNER_TEMP}/action.out"; then
+                echo "Expected output to contain: ${needle}" >&2
+                exit 1
+              fi
+            done <<EOF
+          ${EXPECT_OUTPUT_CONTAINS}
+          EOF
           fi
           if [ -n "${EXPECT_OUTPUT_NOT_CONTAINS}" ] && grep -Fq "${EXPECT_OUTPUT_NOT_CONTAINS}" "${RUNNER_TEMP}/action.out"; then
             echo "Expected output not to contain: ${EXPECT_OUTPUT_NOT_CONTAINS}" >&2
