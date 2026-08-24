@@ -1,0 +1,33 @@
+name: Intentional Checkstyle failures
+
+on:
+  push:
+    branches:
+      - v1.0.0-example
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  checkstyle-demo:
+    name: Demo / default Google checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run Checkstyle against intentionally bad code
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-annotations
+          filter_mode: nofilter
+          level: error
+          fail_level: warning
+          workdir: demo/src/main/java
+          tool_name: reviewdog-checkstyle
