@@ -10,6 +10,10 @@ Or look here: https://github.com/nikitasavinov/checkstyle-action/pull/48
 
 ## Release notes
 
+### 1.0.1
+
+Please update to 1.0.1 version, 1.0.0 is broken as of Nov 11 2026.
+
 ### 1.0.0 upgrade
 
 Version 1.0.0 changes the default Checkstyle version from `10.3` to `13.9.0`.
@@ -92,7 +96,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Run check style
-      uses: nikitasavinov/checkstyle-action@1.0.0
+      uses: nikitasavinov/checkstyle-action@1.0.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
